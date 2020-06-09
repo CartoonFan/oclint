@@ -11,9 +11,8 @@ from oclintscripts import path
 from oclintscripts import process
 
 arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument(
-    "task_name", choices=["checkout", "co", "update", "up", "build"]
-)
+arg_parser.add_argument("task_name",
+                        choices=["checkout", "co", "update", "up", "build"])
 arg_parser.add_argument("-clean", "--clean", action="store_true")
 arg_parser.add_argument("-j", type=int, default=0)
 arg_parser.add_argument(
@@ -38,9 +37,8 @@ def build_command():
     if environment.is_mingw32():
         cmd_build.append("gtest_disable_pthreads:BOOL", "ON")
     if environment.is_darwin():
-        cmd_build.append(
-            "CMAKE_CXX_FLAGS", "-std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}", True
-        )
+        cmd_build.append("CMAKE_CXX_FLAGS",
+                         "-std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}", True)
     return cmd_build.str()
 
 

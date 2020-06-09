@@ -13,9 +13,10 @@ from oclintscripts import process
 OCLINT_MODULES = ["core", "metrics", "rules", "reporters", "driver"]
 
 arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument(
-    "module_name", nargs="?", choices=["all"] + OCLINT_MODULES, default="all"
-)
+arg_parser.add_argument("module_name",
+                        nargs="?",
+                        choices=["all"] + OCLINT_MODULES,
+                        default="all")
 arg_parser.add_argument("-show", "--show", action="store_true")
 arg_parser.add_argument("-clean", "--clean", action="store_true")
 arg_parser.add_argument("-j", type=int, default=0)
@@ -53,7 +54,8 @@ def build_command(module_extras, no_ninja, source_path):
 
 
 def test_result_path(module_name):
-    return os.path.join(path.oclint_module_test_dir(module_name), "testresults.txt")
+    return os.path.join(path.oclint_module_test_dir(module_name),
+                        "testresults.txt")
 
 
 def display_test_result(module_name):
@@ -86,8 +88,7 @@ def test_module(module_name, no_ninja, j):
         process.ninja(j)
     if not args.as_dep:
         run_ctest_command = "ctest --output-on-failure > " + test_result_path(
-            module_name
-        )
+            module_name)
         ctest_exit_code = subprocess.call(run_ctest_command, shell=True)
         display_test_result(module_name)
         if ctest_exit_code:

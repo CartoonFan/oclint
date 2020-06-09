@@ -7,13 +7,14 @@ from oclintscripts import path
 from oclintscripts import version
 
 SCRIPT_WORKING_FOLDER = os.path.dirname(os.path.abspath(__file__))
-RULES_PROJECT_DIRECTORY = os.path.join(SCRIPT_WORKING_FOLDER, "../oclint-rules")
+RULES_PROJECT_DIRECTORY = os.path.join(SCRIPT_WORKING_FOLDER,
+                                       "../oclint-rules")
 RULES_SOURCE_ROOT_DIRECTORY = os.path.join(RULES_PROJECT_DIRECTORY, "rules")
-RULES_SOURCE_ROOT_CMAKELISTS = os.path.join(
-    RULES_SOURCE_ROOT_DIRECTORY, "CMakeLists.txt"
-)
+RULES_SOURCE_ROOT_CMAKELISTS = os.path.join(RULES_SOURCE_ROOT_DIRECTORY,
+                                            "CMakeLists.txt")
 RULES_TEST_ROOT_DIRECTORY = os.path.join(RULES_PROJECT_DIRECTORY, "test")
-RULES_TEST_ROOT_CMAKELISTS = os.path.join(RULES_TEST_ROOT_DIRECTORY, "CMakeLists.txt")
+RULES_TEST_ROOT_CMAKELISTS = os.path.join(RULES_TEST_ROOT_DIRECTORY,
+                                          "CMakeLists.txt")
 RULES_TEMPLATE_DIRECTORY = os.path.join(RULES_PROJECT_DIRECTORY, "template")
 
 
@@ -44,18 +45,16 @@ def pre_check_rule(folder_name):
     path.mkdir_p(custom_folder_path(folder_name))
     cmake_lists_path = custom_cmake_lists_path(folder_name)
     rule_build_step = "\nADD_RULE_CATEGORY_DIRECTORY(" + folder_name + ")\n"
-    add_path_to_cmake_lists(
-        cmake_lists_path, RULES_SOURCE_ROOT_CMAKELISTS, rule_build_step
-    )
+    add_path_to_cmake_lists(cmake_lists_path, RULES_SOURCE_ROOT_CMAKELISTS,
+                            rule_build_step)
 
 
 def pre_check_test(folder_name):
     path.mkdir_p(custom_test_folder_path(folder_name))
     test_cmake_lists_path = custom_test_cmake_lists_path(folder_name)
     test_build_step = "\nADD_SUBDIRECTORY(" + folder_name + ")\n"
-    add_path_to_cmake_lists(
-        test_cmake_lists_path, RULES_TEST_ROOT_CMAKELISTS, test_build_step
-    )
+    add_path_to_cmake_lists(test_cmake_lists_path, RULES_TEST_ROOT_CMAKELISTS,
+                            test_build_step)
 
 
 def pre_check(folder_name):
@@ -78,14 +77,12 @@ def generate_code_block(line, node_type=""):
 
 def visit_ast_nodes():
     visit_nodes = ""
-    with open(
-        os.path.join(RULES_TEMPLATE_DIRECTORY, "ClangStmtNodes"), "r"
-    ) as stmt_nodes:
+    with open(os.path.join(RULES_TEMPLATE_DIRECTORY, "ClangStmtNodes"),
+              "r") as stmt_nodes:
         for each in stmt_nodes:
             visit_nodes += generate_code_block(each)
-    with open(
-        os.path.join(RULES_TEMPLATE_DIRECTORY, "ClangDeclNodes"), "r"
-    ) as stmt_nodes:
+    with open(os.path.join(RULES_TEMPLATE_DIRECTORY, "ClangDeclNodes"),
+              "r") as stmt_nodes:
         for each in stmt_nodes:
             visit_nodes += generate_code_block(each, "Decl")
     return visit_nodes
@@ -107,7 +104,8 @@ def replace_wildcard(each_line, rule_dict):
 
 
 def copy_template(folder_path, rule_type, suffix, rule_dict):
-    template_path = os.path.join(RULES_TEMPLATE_DIRECTORY, rule_type + suffix + ".tmpl")
+    template_path = os.path.join(RULES_TEMPLATE_DIRECTORY,
+                                 rule_type + suffix + ".tmpl")
     rule_class_name = rule_dict["RULE_CLASS_NAME"]
     dst_path = os.path.join(folder_path, rule_class_name + suffix + ".cpp")
     dst_file = open(dst_path, "w")
@@ -130,24 +128,17 @@ def write_cmake_lists(cmake_lists_path, rule_dict):
     with open(cmake_lists_path, "a") as cmake_lists_file:
         rule_class_name = rule_dict["RULE_CLASS_NAME"]
         set_build_rule = "SET(Build" + rule_class_name + "Rule " + rule_class_name + ")"
-        build_dynamic_rules = (
-            'BUILD_DYNAMIC_RULES("${Build' + rule_class_name + 'Rule}")'
-        )
-        cmake_lists_file.write(
-            "\n" + set_build_rule + "\n" + build_dynamic_rules + "\n"
-        )
+        build_dynamic_rules = ('BUILD_DYNAMIC_RULES("${Build' +
+                               rule_class_name + 'Rule}")')
+        cmake_lists_file.write("\n" + set_build_rule + "\n" +
+                               build_dynamic_rules + "\n")
 
 
 def write_test_cmake_lists(cmake_lists_path, rule_dict):
     with open(cmake_lists_path, "a") as cmake_lists_file:
         rule_class_name = rule_dict["RULE_CLASS_NAME"]
-        build_test_rule = (
-            "BUILD_TEST("
-            + rule_class_name
-            + "RuleTest\n"
-            + rule_class_name
-            + "RuleTest.cpp)"
-        )
+        build_test_rule = ("BUILD_TEST(" + rule_class_name + "RuleTest\n" +
+                           rule_class_name + "RuleTest.cpp)")
         cmake_lists_file.write("\n" + build_test_rule + "\n")
 
 
@@ -156,7 +147,8 @@ def scaffold(folder_name, rule_dict):
     write_cmake_lists(custom_cmake_lists_path(folder_name), rule_dict)
     if rule_dict["RULE_TEST"]:
         copy_test(custom_test_folder_path(folder_name), rule_dict)
-        write_test_cmake_lists(custom_test_cmake_lists_path(folder_name), rule_dict)
+        write_test_cmake_lists(custom_test_cmake_lists_path(folder_name),
+                               rule_dict)
 
 
 def lower_add_space(name_re):
@@ -172,11 +164,17 @@ arg_parser.add_argument(
     choices=["Generic", "SourceCodeReader", "ASTVisitor", "ASTMatcher"],
     default="Generic",
 )
-arg_parser.add_argument("-c", "--category", dest="rule_category", default="custom")
+arg_parser.add_argument("-c",
+                        "--category",
+                        dest="rule_category",
+                        default="custom")
 arg_parser.add_argument("-n", "--name", dest="rule_name", default="")
-arg_parser.add_argument(
-    "-p", "--priority", type=int, dest="rule_priority", choices=[1, 2, 3], default=3
-)
+arg_parser.add_argument("-p",
+                        "--priority",
+                        type=int,
+                        dest="rule_priority",
+                        choices=[1, 2, 3],
+                        default=3)
 arg_parser.add_argument(
     "--test",
     dest="generate_tests",
@@ -203,6 +201,7 @@ rule_info_dict = {
 }
 
 if not args.rule_name:
-    rule_info_dict["RULE_NAME"] = re.sub("[A-Z]", lower_add_space, args.class_name)[1:]
+    rule_info_dict["RULE_NAME"] = re.sub("[A-Z]", lower_add_space,
+                                         args.class_name)[1:]
 pre_check(args.rule_category)
 scaffold(args.rule_category, rule_info_dict)
