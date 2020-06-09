@@ -1,12 +1,14 @@
 #! /usr/bin/env python3
-
 import argparse
 import os
 import shutil
 import subprocess
 import sys
 
-from oclintscripts import cmake, environment, path, process
+from oclintscripts import cmake
+from oclintscripts import environment
+from oclintscripts import path
+from oclintscripts import process
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument(

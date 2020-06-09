@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
-
 import os
 
-from oclintscripts import environment, path
+from oclintscripts import environment
+from oclintscripts import path
 
 
 class builder:
