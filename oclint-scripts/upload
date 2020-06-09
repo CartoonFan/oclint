@@ -1,14 +1,11 @@
 #! /usr/bin/env python3
 
 import json
+import os
 import sys
 import time
-import os
 
-from oclintscripts import environment
-from oclintscripts import path
-from oclintscripts import process
-from oclintscripts import version
+from oclintscripts import environment, path, process, version
 
 # This is a placeholder script for uploading generated oclint archive to remote server.
 # Implement this script and comment the line below

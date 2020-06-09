@@ -2,8 +2,7 @@
 
 import os
 
-from oclintscripts import environment
-from oclintscripts import path
+from oclintscripts import environment, path
 
 
 class builder:
