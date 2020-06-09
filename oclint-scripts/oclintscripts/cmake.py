@@ -1,14 +1,14 @@
 #! /usr/bin/env python3
-
 import os
 
 from oclintscripts import environment
 from oclintscripts import path
 
+
 class builder:
     def __init__(self, source_path):
         self.__source_path = source_path
-        self.__cmd = 'cmake'
+        self.__cmd = "cmake"
         if environment.is_mingw32():
             self.__cmd += ' -G "MSYS Makefiles"'
 
@@ -16,33 +16,35 @@ class builder:
         return '"' + value + '"'
 
     def str(self):
-        cmd = self.__cmd + ' '
+        cmd = self.__cmd + " "
         if environment.is_mingw32():
             return cmd + self.__wrap_double_quote(self.__source_path)
         else:
             return cmd + self.__source_path
 
-    def append(self, key, value, double_quote = False):
-        self.__cmd += ' -D ' + key + '='
-        self.__cmd += self.__wrap_double_quote(value) if double_quote else value
+    def append(self, key, value, double_quote=False):
+        self.__cmd += " -D " + key + "="
+        self.__cmd += self.__wrap_double_quote(
+            value) if double_quote else value
         return self
 
     def release_build(self):
-        return self.append('OCLINT_BUILD_TYPE', 'Release')
+        return self.append("OCLINT_BUILD_TYPE", "Release")
 
     def test_build(self):
-        return self.append('TEST_BUILD', '1')
+        return self.append("TEST_BUILD", "1")
 
     def doc_gen_build(self):
-        return self.append('DOC_GEN_BUILD', '1')
+        return self.append("DOC_GEN_BUILD", "1")
 
-    def use_local_clang_compiler(self, llvm_root = path.build.clang_install_dir):
-        clang_bin_path = os.path.join(llvm_root, 'bin', 'clang')
-        return self.append('CMAKE_CXX_COMPILER', clang_bin_path + '++').append('CMAKE_C_COMPILER', clang_bin_path)
+    def use_local_clang_compiler(self, llvm_root=path.build.clang_install_dir):
+        clang_bin_path = os.path.join(llvm_root, "bin", "clang")
+        return self.append("CMAKE_CXX_COMPILER", clang_bin_path + "++").append(
+            "CMAKE_C_COMPILER", clang_bin_path)
 
     def use_ninja(self):
         if not environment.is_mingw32():
-            self.__cmd += ' -G Ninja'
+            self.__cmd += " -G Ninja"
         return self
 
     def append_dict(self, dict):
