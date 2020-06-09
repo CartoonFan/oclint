@@ -47,7 +47,7 @@ def build_module(module_name, llvm_root, is_release, no_ninja, is_docgen, j):
     source_path = path.oclint_module_source_dir(module_name)
 
     module_extras = {}
-    if module_name == "rules" or module_name == "reporters" or module_name == "driver":
+    if module_name in ["rules", "reporters", "driver"]:
         module_extras['OCLINT_SOURCE_DIR'] = path.source.core_dir
         module_extras['OCLINT_BUILD_DIR'] = path.build.core_build_dir
     if module_name == "rules":

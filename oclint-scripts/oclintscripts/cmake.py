@@ -24,10 +24,7 @@ class builder:
 
     def append(self, key, value, double_quote = False):
         self.__cmd += ' -D ' + key + '='
-        if double_quote:
-            self.__cmd += self.__wrap_double_quote(value)
-        else:
-            self.__cmd += value
+        self.__cmd += self.__wrap_double_quote(value) if double_quote else value
         return self
 
     def release_build(self):

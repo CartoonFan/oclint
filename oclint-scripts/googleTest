@@ -61,10 +61,10 @@ def update_googletest():
     process.call('git pull')
     path.cd(current_dir)
 
-if args.task_name == 'checkout' or args.task_name == 'co':
+if args.task_name in ['checkout', 'co']:
     checkout_googletest()
 
-if args.task_name == 'update' or args.task_name == 'up':
+if args.task_name in ['update', 'up']:
     update_googletest()
 
 if args.task_name == 'build':

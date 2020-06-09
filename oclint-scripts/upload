@@ -42,8 +42,7 @@ def archive_file_human_readable_size():
     return format % (size, 'TB')
 
 def archive_json(var_name):
-    archive_info_dict = {}
-    archive_info_dict['date'] = int(time.time())
+    archive_info_dict = {'date': int(time.time())}
     archive_info_dict['version'] = version.oclint_dev_version();
     archive_info_dict['size'] = archive_file_human_readable_size();
     archive_info_dict['path'] = archive_file_name();
