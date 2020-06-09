@@ -12,15 +12,19 @@ from oclintscripts import path
 from oclintscripts import process
 
 arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('task_name', choices=['checkout', 'co', 'update', 'up', 'build'])
+arg_parser.add_argument('task_name', choices=[
+                        'checkout', 'co', 'update', 'up', 'build'])
 arg_parser.add_argument('-clean', '--clean', action="store_true")
 arg_parser.add_argument('-j', type=int, default=0)
-arg_parser.add_argument('-use-system-compiler', '--use-system-compiler', action="store_true", default=environment.is_linux())
+arg_parser.add_argument('-use-system-compiler', '--use-system-compiler',
+                        action="store_true", default=environment.is_linux())
 args = arg_parser.parse_args()
+
 
 def clean_module():
     build_path = path.build.googletest_build_dir
     path.rm_f(build_path)
+
 
 def build_command():
     googlemock_dir = os.path.join(path.source.googletest_dir, "googlemock")
@@ -30,8 +34,10 @@ def build_command():
     if environment.is_mingw32():
         cmd_build.append('gtest_disable_pthreads:BOOL', 'ON')
     if environment.is_darwin():
-        cmd_build.append('CMAKE_CXX_FLAGS', '-std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}', True)
+        cmd_build.append('CMAKE_CXX_FLAGS',
+                         '-std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}', True)
     return cmd_build.str()
+
 
 def build_module(j):
     build_path = path.build.googletest_build_dir
@@ -45,6 +51,7 @@ def build_module(j):
     process.make(j)
     path.cd(current_dir)
 
+
 def checkout_googletest():
     if path.is_dir(path.source.googletest_dir):
         sys.exit('GoogleTest folder exists!')
@@ -53,6 +60,7 @@ def checkout_googletest():
     process.call('git clone ' + path.url.googletest + ' googletest')
     path.cd(current_dir)
 
+
 def update_googletest():
     if not path.is_dir(path.source.googletest_dir):
         sys.exit('GoogleTest folder does not exist!')
@@ -60,6 +68,7 @@ def update_googletest():
     path.cd(path.source.googletest_dir)
     process.call('git pull')
     path.cd(current_dir)
+
 
 if args.task_name in ['checkout', 'co']:
     checkout_googletest()

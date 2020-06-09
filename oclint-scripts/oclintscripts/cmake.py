@@ -5,6 +5,7 @@ import os
 from oclintscripts import environment
 from oclintscripts import path
 
+
 class builder:
     def __init__(self, source_path):
         self.__source_path = source_path
@@ -22,9 +23,10 @@ class builder:
         else:
             return cmd + self.__source_path
 
-    def append(self, key, value, double_quote = False):
+    def append(self, key, value, double_quote=False):
         self.__cmd += ' -D ' + key + '='
-        self.__cmd += self.__wrap_double_quote(value) if double_quote else value
+        self.__cmd += self.__wrap_double_quote(
+            value) if double_quote else value
         return self
 
     def release_build(self):
@@ -36,7 +38,7 @@ class builder:
     def doc_gen_build(self):
         return self.append('DOC_GEN_BUILD', '1')
 
-    def use_local_clang_compiler(self, llvm_root = path.build.clang_install_dir):
+    def use_local_clang_compiler(self, llvm_root=path.build.clang_install_dir):
         clang_bin_path = os.path.join(llvm_root, 'bin', 'clang')
         return self.append('CMAKE_CXX_COMPILER', clang_bin_path + '++').append('CMAKE_C_COMPILER', clang_bin_path)
 
