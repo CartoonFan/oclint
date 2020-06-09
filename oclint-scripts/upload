@@ -20,11 +20,11 @@ def build_root_dir():
 
 
 def archive_file_name():
-    distribution_name = version.oclint_dev_version() + '-' + environment.dist_env()
+    distribution_name = version.oclint_dev_version() + "-" + environment.dist_env()
     if environment.is_mingw32():
-        return 'oclint-' + distribution_name + '.zip'
+        return "oclint-" + distribution_name + ".zip"
     elif environment.is_darwin() or environment.is_linux():
-        return 'oclint-' + distribution_name + '.tar.gz'
+        return "oclint-" + distribution_name + ".tar.gz"
     else:
         sys.exit("Error: this environment is not supported yet.")
 
@@ -40,21 +40,27 @@ def archive_file_size():
 def archive_file_human_readable_size():
     size = archive_file_size()
     format = "%.0f%s"
-    for unit in ['bytes', 'KB', 'MB', 'GB']:
+    for unit in ["bytes", "KB", "MB", "GB"]:
         if size < 1024.0:
             return format % (size, unit)
         size /= 1024.0
-    return format % (size, 'TB')
+    return format % (size, "TB")
 
 
 def archive_json(var_name):
-    archive_info_dict = {'date': int(time.time())}
-    archive_info_dict['version'] = version.oclint_dev_version()
-    archive_info_dict['size'] = archive_file_human_readable_size()
-    archive_info_dict['path'] = archive_file_name()
-    archive_info_dict['description'] = 'OCLint ' + version.oclint_version(
-    ) + ' dev build for ' + environment.kernel() + '/' + environment.arch()
-    return 'var ' + var_name + ' = ' + json.dumps(archive_info_dict) + ';'
+    archive_info_dict = {"date": int(time.time())}
+    archive_info_dict["version"] = version.oclint_dev_version()
+    archive_info_dict["size"] = archive_file_human_readable_size()
+    archive_info_dict["path"] = archive_file_name()
+    archive_info_dict["description"] = (
+        "OCLint "
+        + version.oclint_version()
+        + " dev build for "
+        + environment.kernel()
+        + "/"
+        + environment.arch()
+    )
+    return "var " + var_name + " = " + json.dumps(archive_info_dict) + ";"
 
 
 def run_command(cmd):
