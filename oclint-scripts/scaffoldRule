@@ -96,16 +96,16 @@ def copy_test(folder_path, rule_dict):
     copy_template(folder_path, '', 'RuleTest', rule_dict)
 
 def write_cmake_lists(cmake_lists_path, rule_dict):
-    rule_class_name = rule_dict['RULE_CLASS_NAME']
-    set_build_rule = 'SET(Build' + rule_class_name + 'Rule ' + rule_class_name + ')'
-    build_dynamic_rules = 'BUILD_DYNAMIC_RULES("${Build' + rule_class_name + 'Rule}")'
     with open(cmake_lists_path, 'a') as cmake_lists_file:
+        rule_class_name = rule_dict['RULE_CLASS_NAME']
+        set_build_rule = 'SET(Build' + rule_class_name + 'Rule ' + rule_class_name + ')'
+        build_dynamic_rules = 'BUILD_DYNAMIC_RULES("${Build' + rule_class_name + 'Rule}")'
         cmake_lists_file.write('\n' + set_build_rule + '\n' + build_dynamic_rules + '\n')
 
 def write_test_cmake_lists(cmake_lists_path, rule_dict):
-    rule_class_name = rule_dict['RULE_CLASS_NAME']
-    build_test_rule = 'BUILD_TEST(' + rule_class_name + 'RuleTest\n' + rule_class_name + 'RuleTest.cpp)'
     with open(cmake_lists_path, 'a') as cmake_lists_file:
+        rule_class_name = rule_dict['RULE_CLASS_NAME']
+        build_test_rule = 'BUILD_TEST(' + rule_class_name + 'RuleTest\n' + rule_class_name + 'RuleTest.cpp)'
         cmake_lists_file.write('\n' + build_test_rule + '\n')
 
 
